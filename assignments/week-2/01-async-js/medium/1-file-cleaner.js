@@ -1,17 +1,17 @@
 const fs = require("fs");
 
-const removeWhiteSpaces = async (content) => {
+const removeWhiteSpaces = (content) => {
   return content.replace(/\s+/g, " ");
 };
 
-let fileCleaner = async () => {
+let fileCleaner = () => {
   let updatedContent = "";
-  fs.readFile("./temp.txt", async (err, data) => {
+  fs.readFile("./temp.txt", (err, data) => {
     if (err) {
       throw err;
     }
     let content = data.toString();
-    updatedContent = await removeWhiteSpaces(content);
+    updatedContent = removeWhiteSpaces(content);
   });
   setTimeout(() => {
     fs.writeFile("./temp.txt", updatedContent, (err) => {
