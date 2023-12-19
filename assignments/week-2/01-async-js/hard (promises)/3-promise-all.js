@@ -5,19 +5,41 @@
  */
 
 function wait1(t) {
-
+  const promise = new Promise((resolve, reject) => {
+    setTimeout(() => {
+      resolve();
+    }, t * 1000);
+  });
+  return promise;
 }
 
 function wait2(t) {
-
+  const promise = new Promise((resolve, reject) => {
+    setTimeout(() => {
+      resolve();
+    }, t * 1000);
+  });
+  return promise;
 }
 
 function wait3(t) {
-
+  const promise = new Promise((resolve, reject) => {
+    setTimeout(() => {
+      resolve();
+    }, t * 1000);
+  });
+  return promise;
 }
 
 function calculateTime(t1, t2, t3) {
-
+  const initialDate = new Date().getTime();
+  const w1 = wait1(t1);
+  const w2 = wait2(t2);
+  const w3 = wait3(t3);
+  return Promise.all([w1, w2, w3]).then(() => {
+    const finalDate = new Date().getTime();
+    return finalDate - initialDate;
+  });
 }
 
 module.exports = calculateTime;
