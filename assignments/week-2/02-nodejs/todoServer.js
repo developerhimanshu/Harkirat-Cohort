@@ -39,11 +39,86 @@
 
   Testing the server - run `npm run test-todoServer` command in terminal
  */
-  const express = require('express');
-  const bodyParser = require('body-parser');
-  
-  const app = express();
-  
-  app.use(bodyParser.json());
-  
-  module.exports = app;
+const express = require("express");
+const bodyParser = require("body-parser");
+const fs = require("fs");
+const app = express();
+app.use(bodyParser.json());
+
+let toDos = [];
+
+fs.readFile("todos.json", "utf8", (err, data) => {
+  if (!err) {
+    toDos = JSON.parse(data);
+  }
+});
+
+app.get("/todos", (req, res) => {
+  res.json(toDos);
+});
+
+app.get("/todos/:id", (req, res) => {
+  const todo = toDos.find((t) => t.id === parseInt(req.params.id));
+  if (!todo) {
+    return res.status(404).send();
+  }
+  return res.json(todo);
+});
+
+app.post("/todos", (req, res) => {
+  const id = Math.floor(Math.random() * 1000000);
+  const todo = {
+    id: id,
+    title: req.body.title,
+    description: req.body.description,
+    completed: req.body.completed,
+  };
+  toDos.push(todo);
+  fs.writeFile("todos.json", JSON.stringify(toDos), "utf8", (err) => {
+    if (err) {
+      return res.status(500).json({ error: err });
+    } else {
+      return res.send("Data written successfully to the file");
+    }
+  });
+  // console.log(todo);
+  // toDos.push(todo);
+});
+
+app.put("/todos/:id", (req, res) => {
+  const index = toDos.findIndex((t) => t.id === parseInt(req.params.id));
+  if (index === -1) return res.status(404).send();
+  else {
+    toDos[index].title = req.body.title;
+    toDos[index].description = req.body.description;
+    toDos[index].completed = req.body.completed;
+  }
+
+  fs.writeFile("todos.json", JSON.stringify(toDos), "utf8", (err) => {
+    if (err) {
+      res.status(500).json({ error: err });
+    } else {
+      res.status(200).json(toDos[index]);
+    }
+  });
+});
+
+app.delete("/todos/:id", (req, res) => {
+  const index = toDos.findIndex((t) => t.id === parseInt(req.params.id));
+  if (index === -1) return res.status(404).send();
+  else {
+    toDos.splice(index, 1);
+
+    fs.writeFile("todos.json", JSON.stringify(toDos), (err) => {
+      if (err) {
+        return res.status(500).send({ error: err });
+      } else {
+        return res.status(200).json(toDos);
+      }
+    });
+  }
+});
+
+app.listen(3000);
+
+module.exports = app;
