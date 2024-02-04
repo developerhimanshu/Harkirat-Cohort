@@ -37,20 +37,16 @@ router.get("/courses", async (req, res) => {
   res.send(200).json(courses);
 });
 
-router.post("/courses/:courseId", userMiddleware, (req, res) => {
+router.post("/courses/:courseId", userMiddleware, async (req, res) => {
   // Implement course purchase logic
   const courseId = req.params.courseId;
-  User.updateOne(
+  const resp = await User.updateOne(
     { username: req.headers.username },
-    { $push: { coursesPurchased: courseId } },
-    (err, user) => {
-      if (err) {
-        console.log(err);
-      } else {
-        res.status(200).send("Course purchased successfully");
-      }
-    }
+    { $push: { coursesPurchased: courseId } }
   );
+  if (resp) {
+    res.status(200).send("Course purchased successfully");
+  }
 });
 
 router.get("/purchasedCourses", userMiddleware, (req, res) => {
