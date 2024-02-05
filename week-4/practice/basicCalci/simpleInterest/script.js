@@ -1,3 +1,9 @@
+let timeout;
+function debouncedGetInterest() {
+  clearInterval(timeout);
+  timeout = setInterval(getInterest(), 100);
+}
+
 async function getInterest() {
   let n1Input = document.getElementById("n1");
   let n2Input = document.getElementById("n2");
@@ -12,6 +18,6 @@ async function getInterest() {
     `https://sum-server.100xdevs.com/interest?principal=${n1}&rate=${n2}&time=${n3}`
   );
   const data = await rawdata.json();
-  total.innerHTML += data.total;
-  interest.innerHTML += data.interest;
+  total.innerHTML = data.total;
+  interest.innerHTML = data.interest;
 }

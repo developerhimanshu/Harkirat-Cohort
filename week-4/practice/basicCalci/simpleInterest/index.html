@@ -7,12 +7,29 @@
   </head>
   <body>
     <h1>Interest Calculator</h1>
-    <input type="text" placeholder="Principle amount" id="n1" /><br /><br />
-    <input type="text" placeholder="Rate percentage" id="n2" /><br /><br />
-    <input type="text" placeholder="Time frame" id="n3" /><br /><br />
-    <button id="b1" onClick="getInterest()">Calculate</button>
-    <p id="total">Total:</p>
-    <p id="interest">Interest:</p>
+    <input
+      onchange="debouncedGetInterest()"
+      type="text"
+      placeholder="Principle amount"
+      id="n1"
+    /><br /><br />
+    <input
+      type="text"
+      oninput="debouncedGetInterest()"
+      placeholder="Rate percentage"
+      id="n2"
+    /><br /><br />
+    <input
+      type="text"
+      oninput="debouncedGetInterest()"
+      placeholder="Time frame"
+      id="n3"
+    /><br /><br />
+
+    Total:
+    <p id="total"></p>
+    Interest
+    <p id="interest"></p>
     <script src="script.js"></script>
   </body>
 </html>
