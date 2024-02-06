@@ -19,6 +19,29 @@ function createChild(title, description, id) {
   child.setAttribute("id", id);
   return child;
 }
+
+//Updating the dom according to the state(an array of title, description)
+function updateDomAccToState(state) {
+  const parent = document.getElementById("container");
+  parent.innerHTML = "";
+
+  for (let i = 0; i < state.length; i++) {
+    const child = createChild(
+      state[i].title,
+      state[i].description,
+      state[i].id
+    );
+    parent.appendChild(child);
+  }
+}
+
+window.setInterval(async function () {
+  const response = await fetch("https://sum-server.100xdevs.com/todos");
+  const result = await response.json();
+  console.log(result);
+  updateDomAccToState(result.todos);
+}, 5000);
+
 function addTodo() {
   const title = document.getElementById("todo-title").value;
   const description = document.getElementById("todo-description").value;
