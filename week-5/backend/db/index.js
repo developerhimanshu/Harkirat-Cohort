@@ -3,7 +3,7 @@ require('dotenv').config()
 mongoose.connect(process.env.MONGO_URI)
 
 const TodoSchema = new mongoose.Schema({
-    todo:String,
+    title:String,
     description:String,
     isCompleted:Boolean,
 });
