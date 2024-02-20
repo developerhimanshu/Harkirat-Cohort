@@ -1,11 +1,12 @@
 const express = require('express');
 const Todo = require('./db');
 const {createTodo, updateTodo} = require('./types');
-
+const cors = require('cors');
 const app = express();
 
 require('dotenv').config()
 app.use(express.json());
+app.use(cors())
 
 const port = 3000;
 
@@ -20,7 +21,8 @@ app.post('/todo', async(req,res)=>{
  }
  const newTodo = await Todo.create({
    title: createPayload.title,
-   description: createPayload.description
+   description: createPayload.description,
+   isCompleted: false,
  })
  res.status(200).json({
    msg: "Todo created"
@@ -46,7 +48,10 @@ app.put("/completed", async(req, res)=>{
       })
       return;
    }
-   const newTodo = await Todo.updateOne()
+   await Todo.updateOne({_id:updatePayload.id}, {isCompleted:true})
+   res.status(200).json({
+      msg: "Todo completed"
+   }) 
 })
 
 app.listen(port, ()=>{
