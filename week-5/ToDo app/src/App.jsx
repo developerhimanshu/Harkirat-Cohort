@@ -8,6 +8,8 @@ import Todos from './components/Todos'
  function App() {
   const [todos, setTodos] = useState([])
   const [loading, setLoading] = useState(true);
+  
+  
   useEffect(() => {
     async function fetchData() {
       try{
@@ -22,14 +24,33 @@ import Todos from './components/Todos'
     }
     fetchData();
   }, []);
+
+  const updateTodo = ()=>{
+    useEffect(() => {
+      async function fetchData() {
+        try{
+        const res = await axios.get('http://localhost:3000/todos');
+        setTodos(res.data);
+        console.log(todos);
+        setLoading(false);
+        }catch(err){
+          console.log(err);
+          setTodos([]);
+        }
+      }
+      fetchData();
+    }, []);
+  }
+
+
   
   if(loading){
     return <div>Loading...</div>
   }
   return (
    <div>
-      <CreateTodo/>
-      <Todos todos={todos}/>
+      <CreateTodo setTodos = {setTodos} todos={todos}/>
+      <Todos todos={todos} setTodos={setTodos}/>
    </div>
   )
 }

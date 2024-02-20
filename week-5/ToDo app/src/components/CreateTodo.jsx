@@ -1,11 +1,8 @@
 import axios from 'axios';
 import React, { useState } from 'react'
 
-const addTodo = ()=>{
-  const title = document.getElementById('title').ariaValueMax;
-}
 
-const CreateTodo = () => {
+const CreateTodo = ({todos, setTodos}) => {
   const [title, setTitle] = useState("");
   const [description, setDiscription] = useState("");  
 
@@ -16,12 +13,13 @@ const CreateTodo = () => {
       const response = await axios.post("http://localhost:3000/todo", {
         title:title,
         description:description
-
       });
+      setTodos([...todos, {title:title, description:description, isCompleted:false}]);
       console.log(response.data);
 
       setTitle('');
       setDiscription('');
+
     }catch(err){
       console.log(err);
     }
