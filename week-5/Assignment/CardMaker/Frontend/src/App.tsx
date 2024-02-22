@@ -1,9 +1,11 @@
+import CreateCards from "./components/CreateCards"
+
 function App() {
 
 
   return (
-    <div>
-      Hi there!
+    <div className="flex flex-col items-center">
+      <CreateCards/>
     </div>
   )
 }
