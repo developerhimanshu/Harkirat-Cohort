@@ -14,9 +14,6 @@ app.get('/cards', async(req, res)=>{
     res.status(200).json(cards);
 })
 
-app.get('/', (req, res)=>{
-    res.send("hello")
-})
 
 app.post('/card', async(req, res)=>{
     const cardPayload = req.body
